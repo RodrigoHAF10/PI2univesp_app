@@ -8,7 +8,6 @@ import {
     Alert,
     Image,
     TouchableOpacity,
-    useColorScheme
 } from 'react-native';
 import axios from 'axios';
 import { launchImageLibrary } from 'react-native-image-picker';
@@ -22,7 +21,6 @@ const PainelSolicitacoesMunicipe = ({ navigation }) => {
     const [foto, setFoto] = useState(null);
     const [tipoSolicitacao, setTipoSolicitacao] = useState('manutencao');
     const [prioridade, setPrioridade] = useState('minima');
-    const colorScheme = useColorScheme(); // Detecta o tema do sistema
 
     const handleSelectImage = () => {
         launchImageLibrary({}, (response) => {
@@ -38,7 +36,7 @@ const PainelSolicitacoesMunicipe = ({ navigation }) => {
             Alert.alert('Erro', 'Preencha todos os campos e adicione uma foto.');
             return;
         }
-    
+
         try {
             const formData = new FormData();
             formData.append('nome', nome);
@@ -52,13 +50,17 @@ const PainelSolicitacoesMunicipe = ({ navigation }) => {
             });
             formData.append('tipo_solicitacao', tipoSolicitacao);
             formData.append('prioridade', prioridade);
-    
-            const response = await axios.post('https://mean-pigs-start.loca.lt/api/solicitacoes/', formData, { // Atualize a URL aqui após a hospedagem
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-    
+
+            const response = await axios.post(
+                'https://pi2univespsite.pythonanywhere.com/api/solicitacoes/',
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                }
+            );
+
             if (response.status === 201) {
                 const solicitacaoId = response.data.id;
                 navigation.navigate('SolicitacaoSucesso', {
@@ -78,7 +80,7 @@ const PainelSolicitacoesMunicipe = ({ navigation }) => {
             Alert.alert('Erro', 'Erro ao enviar solicitação.');
         }
     };
-    
+
     return (
         <ScrollView style={styles.container}>
             <View style={styles.header}>
@@ -89,70 +91,45 @@ const PainelSolicitacoesMunicipe = ({ navigation }) => {
 
             <View style={styles.formContainer}>
                 <TextInput
-                    style={[
-                        styles.input,
-                        {
-                            backgroundColor: colorScheme === 'dark' ? '#333' : '#fff',
-                            color: colorScheme === 'dark' ? '#FFF' : '#333',
-                        },
-                    ]}
+                    style={styles.input}
                     placeholder="Seu Nome"
                     value={nome}
                     onChangeText={setNome}
-                    placeholderTextColor={colorScheme === 'dark' ? '#AAA' : '#666'}
+                    placeholderTextColor="#666"
                 />
                 <TextInput
-                    style={[
-                        styles.input,
-                        {
-                            backgroundColor: colorScheme === 'dark' ? '#333' : '#fff',
-                            color: colorScheme === 'dark' ? '#FFF' : '#333',
-                        },
-                    ]}
+                    style={styles.input}
                     placeholder="Endereço"
                     value={endereco}
                     onChangeText={setEndereco}
-                    placeholderTextColor={colorScheme === 'dark' ? '#AAA' : '#666'}
+                    placeholderTextColor="#666"
                 />
                 <TextInput
-                    style={[
-                        styles.input,
-                        {
-                            backgroundColor: colorScheme === 'dark' ? '#333' : '#fff',
-                            color: colorScheme === 'dark' ? '#FFF' : '#333',
-                        },
-                    ]}
+                    style={styles.input}
                     placeholder="E-mail"
                     value={email}
                     onChangeText={setEmail}
-                    placeholderTextColor={colorScheme === 'dark' ? '#AAA' : '#666'}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    placeholderTextColor="#666"
                 />
-                
+
                 <Text style={styles.label}>Mensagem:</Text>
                 <TextInput
-                    style={[
-                        styles.textarea,
-                        {
-                            backgroundColor: colorScheme === 'dark' ? '#333' : '#fff',
-                            color: colorScheme === 'dark' ? '#FFF' : '#333',
-                        },
-                    ]}
+                    style={styles.textarea}
                     placeholder="Digite sua mensagem aqui..."
                     value={mensagem}
                     onChangeText={setMensagem}
                     multiline
                     numberOfLines={4}
-                    placeholderTextColor={colorScheme === 'dark' ? '#AAA' : '#666'}
+                    placeholderTextColor="#666"
                 />
 
                 <Text style={styles.label}>Tipo de Solicitação:</Text>
                 <Picker
                     selectedValue={tipoSolicitacao}
                     onValueChange={setTipoSolicitacao}
-                    style={[
-                        styles.picker,
-                        { color: colorScheme === 'dark' ? '#FFF' : '#000' },
-                    ]}
+                    style={styles.picker}
                 >
                     <Picker.Item label="Manutenção" value="manutencao" />
                     <Picker.Item label="Melhoria" value="outra_opcao" />
@@ -163,10 +140,7 @@ const PainelSolicitacoesMunicipe = ({ navigation }) => {
                 <Picker
                     selectedValue={prioridade}
                     onValueChange={setPrioridade}
-                    style={[
-                        styles.picker,
-                        { color: colorScheme === 'dark' ? '#FFF' : '#000' },
-                    ]}
+                    style={styles.picker}
                 >
                     <Picker.Item label="Mínima" value="minima" />
                     <Picker.Item label="Máxima" value="maxima" />
@@ -212,7 +186,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         textAlign: 'center',
         marginVertical: 10,
-        color: '#000', 
+        color: '#000',
     },
     formContainer: {
         marginVertical: 20,
@@ -224,6 +198,8 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         paddingHorizontal: 10,
         marginBottom: 15,
+        backgroundColor: '#FFF', // Fundo branco
+        color: '#333', // Texto preto
     },
     textarea: {
         borderColor: '#ccc',
@@ -233,6 +209,8 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         height: 100,
         textAlignVertical: 'top',
+        backgroundColor: '#FFF', // Fundo branco
+        color: '#333', // Texto preto
     },
     label: {
         fontSize: 16,
@@ -244,6 +222,7 @@ const styles = StyleSheet.create({
         height: 50,
         width: '100%',
         marginBottom: 15,
+        color: '#000', // Sempre texto preto
     },
     previewImage: {
         width: '100%',

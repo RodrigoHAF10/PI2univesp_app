@@ -21,8 +21,11 @@ const LoginScreen = () => {
 
     const handleLogin = async () => {
         setLoading(true);
+        setError(''); // Reset error message
+
         try {
-            const response = await axios.post('https://mean-pigs-start.loca.lt/api/token/', {     // Atualize a URL aqui após a hospedagem, ou instale ( npm install -g localtunnel ) para testes e após a instalação ( lt --port 8000 ) para criar o túnel.
+            const response = await axios.post('https://pi2univespsite.pythonanywhere.com/api/token/', 
+            {   
                 username: email,
                 password: password,
             });
@@ -32,8 +35,13 @@ const LoginScreen = () => {
             }
         } catch (err) {
             if (err.response) {
-                // Erro na resposta do servidor (ex: 400, 404, 500)
-                setError(`Erro no servidor: ${err.response.status} - ${err.response.data}`);
+                if (err.response.status === 401) {
+                    // Erro de autenticação
+                    setError('E-mail ou senha incorretos.');
+                } else {
+                    // Outro erro no servidor (exemplo: erro 500)
+                    setError('Erro no servidor. Tente novamente mais tarde.');
+                }
             } else if (err.request) {
                 // A requisição foi feita, mas sem resposta
                 setError('Servidor sem resposta. Verifique sua conexão.');

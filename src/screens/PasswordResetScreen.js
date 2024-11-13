@@ -10,7 +10,7 @@ const PasswordResetScreen = ({ navigation }) => {
 
   const handlePasswordReset = async () => {
     try {
-      const response = await axios.post('http://10.0.0.124:8000/api/password_reset/', { // Atualize a URL aqui após a hospedagem
+      const response = await axios.post('https://pi2univespsite.pythonanywhere.com/api/password_reset/', {
         email: email,
       });
 

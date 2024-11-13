@@ -8,7 +8,6 @@ import {
     StyleSheet,
     Image,
     ActivityIndicator,
-    useColorScheme
 } from 'react-native';
 import axios from 'axios';
 
@@ -17,7 +16,6 @@ const CadastroScreen = ({ navigation }) => {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const colorScheme = useColorScheme();  // Detecta o tema do sistema
 
     const handleCadastro = async () => {
         if (!email || !password) {
@@ -34,7 +32,7 @@ const CadastroScreen = ({ navigation }) => {
         try {
             const response = await axios({
                 method: 'post',
-                url: 'https://mean-pigs-start.loca.lt/register_municipe/', // Atualize a URL aqui após a hospedagem
+                url: 'https://pi2univespsite.pythonanywhere.com/register_municipe/',
                 data: formData,
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -67,33 +65,21 @@ const CadastroScreen = ({ navigation }) => {
             {error ? <Text style={styles.error}>{error}</Text> : null}
 
             <TextInput
-                style={[
-                    styles.input,
-                    {
-                        backgroundColor: colorScheme === 'dark' ? '#333' : '#FFF',
-                        color: colorScheme === 'dark' ? '#FFF' : '#333',
-                    },
-                ]}
+                style={styles.input}
                 placeholder="E-mail"
                 value={email}
                 onChangeText={setEmail}
                 keyboardType="email-address"
                 autoCapitalize="none"
-                placeholderTextColor={colorScheme === 'dark' ? '#AAA' : '#666'}
+                placeholderTextColor="#666"
             />
             <TextInput
-                style={[
-                    styles.input,
-                    {
-                        backgroundColor: colorScheme === 'dark' ? '#333' : '#FFF',
-                        color: colorScheme === 'dark' ? '#FFF' : '#333',
-                    },
-                ]}
+                style={styles.input}
                 placeholder="Senha"
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry
-                placeholderTextColor={colorScheme === 'dark' ? '#AAA' : '#666'}
+                placeholderTextColor="#666"
             />
 
             {loading ? (
@@ -119,11 +105,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#f8f9fa',
     },
     logo: {
-        width: '80%',  // Define a largura como uma porcentagem para se adaptar à tela
-        height: undefined,  // Permite que a altura seja ajustada automaticamente
-        aspectRatio: 3,  // Proporção da imagem (3 de largura para 1 de altura)
-        alignSelf: 'center',  // Centraliza a imagem
-        resizeMode: 'contain',  // Ajusta a imagem para que caiba sem cortes
+        width: '80%',
+        height: undefined,
+        aspectRatio: 3,
+        alignSelf: 'center',
+        resizeMode: 'contain',
         marginBottom: 30,
     },
     title: {
@@ -140,12 +126,12 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingHorizontal: 15,
         marginBottom: 20,
-        backgroundColor: '#FFF', // Fundo branco
+        backgroundColor: '#FFF', // Sempre fundo branco
         fontSize: 16,
-        color: '#333', // Texto preto
-        elevation: 0, // Remove elevação em Android
-        shadowOpacity: 0, // Remove sombra em iOS
-        borderWidth: 0, // Remover bordas específicas que criem o relevo
+        color: '#333', // Sempre texto preto
+        elevation: 0,
+        shadowOpacity: 0,
+        borderWidth: 0,
     },
     button: {
         backgroundColor: '#0e1c36',
